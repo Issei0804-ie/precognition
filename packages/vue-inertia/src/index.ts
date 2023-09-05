@@ -51,7 +51,6 @@ export const useForm = <Data extends Record<string, unknown>>(method: RequestMet
      * The Inertia transform function.
      */
     const inertiaTransform = inertiaForm.transform.bind(inertiaForm)
-    let transform = (data: any) => data
 
     /**
      * Patch the form.
@@ -104,7 +103,7 @@ export const useForm = <Data extends Record<string, unknown>>(method: RequestMet
             return form
         },
         validate(name?: string|NamedInputEvent) {
-            precognitiveForm.setData(transform(inertiaForm.data()))
+            precognitiveForm.setData(inertiaForm.data())
 
             precognitiveForm.validate(name)
 
@@ -120,8 +119,8 @@ export const useForm = <Data extends Record<string, unknown>>(method: RequestMet
 
             return form
         },
-        transform(callback: () => object) {
-            transform = callback
+        transform(callback: (data: Record<string, unknown>) => Record<string, unknown>) {
+            precognitiveForm.setTransform(callback)
             inertiaTransform(callback)
             return form
         },
