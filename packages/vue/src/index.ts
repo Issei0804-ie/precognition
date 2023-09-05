@@ -28,6 +28,8 @@ export const useForm = <Data extends Record<string, unknown>>(method: RequestMet
      */
     const touched = ref<(keyof Partial<Data>)[]>([])
 
+    let transform = (data: any) => data
+
     /**
      * The validator instance.
      */
@@ -89,10 +91,16 @@ export const useForm = <Data extends Record<string, unknown>>(method: RequestMet
             }), {}) as Data
         },
         setData(data: Record<string, unknown>) {
+            data = transform(data)
             Object.keys(data).forEach(input => {
                 // @ts-expect-error
                 form[input] = data[input]
             })
+
+            return form
+        },
+        setTransform(callback) {
+            transform = callback
 
             return form
         },

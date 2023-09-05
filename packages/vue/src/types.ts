@@ -7,6 +7,7 @@ export interface Form<Data extends Record<string, unknown>> {
     touch(name: string|NamedInputEvent|Array<string>): Data&Form<Data>,
     data(): Data,
     setData(data: Record<string, unknown>): Data&Form<Data>,
+    setTransform(callback: (data: Record<string, unknown>) => Record<string, unknown>): Data&Form<Data>,
     errors: Partial<Record<keyof Data, string>>,
     hasErrors: boolean,
     valid(name: keyof Data): boolean,
